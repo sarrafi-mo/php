@@ -4,6 +4,9 @@ include 'db.php';
 
 // Allow only specific request methods
 $method = $_SERVER['REQUEST_METHOD'];
+
+// Read raw data from the request body and decode it as a JSON array
+// This allows handling of JSON payloads sent via various HTTP methods (e.g., POST, PUT, DELETE)
 $input = json_decode(file_get_contents('php://input'), true);
 
 switch ($method) {
@@ -34,6 +37,8 @@ function handleGet()
     if ($result) {
         echo json_encode($result);
     } else {
+        // Set the HTTP response status code to 500 (Internal Server Error)
+        // This indicates that an error occurred on the server side while processing the request
         http_response_code(500);
         $db->logError("Failed to retrieve users.");
         echo json_encode(['message' => 'An error occurred while retrieving users.']);
