@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PHP API Client</title>
+    <link href="bootstrap.min.css" rel="stylesheet">
+    <script src="axios.min.js"></script>
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">PHP API Client</h1>
+
+        <!-- GET Section -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5>GET Users</h5>
+            </div>
+            <div class="card-body">
+                <button class="btn btn-primary" onclick="getUsers()">Fetch Users</button>
+                <pre id="getResult" class="mt-3"></pre>
+            </div>
+        </div>
+
+        <!-- POST Section -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5>POST - Add New User</h5>
+            </div>
+            <div class="card-body">
+                <form id="postForm">
+                    <div class="mb-3">
+                        <label for="postName" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="postName" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="postEmail" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="postEmail" required>
+                    </div>
+                    <button type="button" class="btn btn-success" onclick="addUser()">Add User</button>
+                </form>
+                <pre id="postResult" class="mt-3"></pre>
+            </div>
+        </div>
+
+        <!-- PUT Section -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5>PUT - Update User</h5>
+            </div>
+            <div class="card-body">
+                <form id="putForm">
+                    <div class="mb-3">
+                        <label for="putId" class="form-label">User ID</label>
+                        <input type="text" class="form-control" id="putId" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="putName" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="putName" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="putEmail" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="putEmail" required>
+                    </div>
+                    <button type="button" class="btn btn-warning" onclick="updateUser()">Update User</button>
+                </form>
+                <pre id="putResult" class="mt-3"></pre>
+            </div>
+        </div>
+
+        <!-- DELETE Section -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5>DELETE - Remove User</h5>
+            </div>
+            <div class="card-body">
+                <form id="deleteForm">
+                    <div class="mb-3">
+                        <label for="deleteId" class="form-label">User ID</label>
+                        <input type="text" class="form-control" id="deleteId" required>
+                    </div>
+                    <button type="button" class="btn btn-danger" onclick="deleteUser()">Delete User</button>
+                </form>
+                <pre id="deleteResult" class="mt-3"></pre>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const apiUrl = 'http://projects.local/simple-api/api.php'; // Replace with your API URL
+
+        function getUsers() {
+            axios.get(apiUrl)
+                .then(response => {
+                    document.getElementById('getResult').innerText = JSON.stringify(response.data, null, 2);
+                })
+                .catch(error => {
+                    document.getElementById('getResult').innerText = error;
+                });
+        }
+
+        function addUser() {
+            const name = document.getElementById('postName').value;
+            const email = document.getElementById('postEmail').value;
+
+            axios.post(apiUrl, { name: name, email: email })
+                .then(response => {
+                    document.getElementById('postResult').innerText = JSON.stringify(response.data, null, 2);
+                })
+                .catch(error => {
+                    document.getElementById('postResult').innerText = error;
+                });
+        }
+
+        function updateUser() {
+            const id = document.getElementById('putId').value;
+            const name = document.getElementById('putName').value;
+            const email = document.getElementById('putEmail').value;
+
+            axios.put(apiUrl, { id: id, name: name, email: email })
+                .then(response => {
+                    document.getElementById('putResult').innerText = JSON.stringify(response.data, null, 2);
+                })
+                .catch(error => {
+                    document.getElementById('putResult').innerText = error;
+                });
+        }
+
+        function deleteUser() {
+            const id = document.getElementById('deleteId').value;
+
+            axios.delete(apiUrl, { data: { id: id } })
+                .then(response => {
+                    document.getElementById('deleteResult').innerText = JSON.stringify(response.data, null, 2);
+                })
+                .catch(error => {
+                    document.getElementById('deleteResult').innerText = error;
+                });
+        }
+    </script>
+</body>
+
+</html>
