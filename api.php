@@ -35,6 +35,7 @@ function handleGet()
         echo json_encode($result);
     } else {
         http_response_code(500);
+        $db->logError("Failed to retrieve users.");
         echo json_encode(['message' => 'An error occurred while retrieving users.']);
     }
 }
@@ -56,6 +57,7 @@ function handlePost($input)
         echo json_encode(['message' => 'User created successfully', 'id' => $insertId]);
     } else {
         http_response_code(500);
+        $db->logError("Failed to create user with data: " . json_encode($input));
         echo json_encode(['message' => 'Failed to create user']);
     }
 }
@@ -79,6 +81,7 @@ function handlePut($input)
         echo json_encode(['message' => 'No user was updated. User not found or data unchanged.']);
     } else {
         http_response_code(500);
+        $db->logError("Failed to update user with ID: " . $input['id']);
         echo json_encode(['message' => 'Failed to update user']);
     }
 }
@@ -102,6 +105,7 @@ function handleDelete($input)
         echo json_encode(['message' => 'User not found.']);
     } else {
         http_response_code(500);
+        $db->logError("Failed to delete user with ID: " . $input['id']);
         echo json_encode(['message' => 'Failed to delete user']);
     }
 }
