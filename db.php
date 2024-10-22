@@ -29,6 +29,7 @@ class Db
 
         $this->connection->set_charset("utf8");
     } catch (Exception $e) {
+        $this->logError("Database Connection Error: " . $e->getMessage());
         die("Database connection error. Please try again later.");
     }
 }
@@ -52,6 +53,7 @@ class Db
 
         return $stmt;
     } catch (Exception $e) {
+        $this->logError("Database Error: " . $e->getMessage());
         return false;
     }
 }
@@ -61,6 +63,7 @@ class Db
     {
         $stmt = $this->executeQuery($sql, $types, $params);
         if (!$stmt) {
+            $this->logError("Query failed: " . $sql);
             return null;
         }
 
@@ -75,6 +78,7 @@ class Db
     {
         $stmt = $this->executeQuery($sql, $types, $params);
         if (!$stmt) {
+            $this->logError("Insert failed: " . $sql);
             return false;
         }
 
@@ -88,6 +92,7 @@ class Db
     {
         $stmt = $this->executeQuery($sql, $types, $params);
         if (!$stmt) {
+            $this->logError("Modify failed: " . $sql);
             return false;
         }
 
@@ -95,6 +100,11 @@ class Db
         $stmt->close();
 
         return $affectedRows;
+    }
+
+    public function logError($message)
+    {
+        file_put_contents('error_log.txt', date('Y-m-d H:i:s') . ": " . $message . PHP_EOL, FILE_APPEND);
     }
 
     public function close()
