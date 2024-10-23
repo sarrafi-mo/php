@@ -15,6 +15,9 @@ A lightweight PHP API for handling CRUD (Create, Read, Update, Delete) operation
 - JavaScript (with Axios)
 - HTML & Bootstrap (for client-side testing)
 
+![postman.html page](images/postman.png)
+
+
 ## Setup Instructions
 1. Clone the repository:
     ```
